@@ -3,3 +3,4 @@
  */
 
 
+angular.module('app.index.animation',[]);
