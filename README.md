@@ -3,6 +3,7 @@
     文件就要每次发布都要改动那个加载，非常不方便。可能的解决方案：（1）看看有没有别的插件或者自己
     写插件；（2）使用webpack的requir方式分块文件，然后使用oclazyload或angularAMD的requir方式加载文
     件。
+2. 暂未加入代码压缩。
 
 ## 文件路径
 #### 一些比较重要的路径
@@ -13,7 +14,9 @@ src/index/scripts/ng/index.js
 ###### html中的老大
 src/index.html
 ###### 路由配置文件
-src/index/scripts/ng/config/routerStates.js
+src/index/scripts/ng/config/routerStates.js  
+**注意在此文件中，添加懒加载的文件时，文件名后面要跟上[hash]，以匹配文件的hash值。**  
+**如：test.js，要写成test[hash].js**
 ###### 每个模块的入口文件
 src/*/scripts/ng/index.js
 ###### angular代码文件夹

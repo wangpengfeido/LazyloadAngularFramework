@@ -8,6 +8,7 @@ const extractTextWebpackPlugin = require('extract-text-webpack-plugin');        
 const htmlWebpackPlugin = require('html-webpack-plugin');                                //自动生成html
 const autoprefixer = require('autoprefixer');                    //自动补全css前缀
 const copyWebpackPlugin = require('copy-webpack-plugin');          //复制文件
+const stringReplaceWebpackPlugin=require('string-replace-webpack-plugin');
 
 
 function getWebpackConfig({outPath}) {
@@ -35,6 +36,7 @@ function getWebpackConfig({outPath}) {
                 {test: /\.css$/, use: extractCssAndLess.extract(['css-loader', {loader: 'postcss-loader', options: {plugins: [autoprefixer({browsers: ['last 10 versions']})]}}])},      //处理css
                 {test: /\.less$/, use: extractCssAndLess.extract(['css-loader', {loader: 'postcss-loader', options: {plugins: [autoprefixer({browsers: ['last 10 versions']})]}}, 'less-loader'])},      //处理less
                 {test: /\.(woff|woff2|eot|ttf|svg)(\?.*$|$)/, use: [{loader: 'url-loader?importLoaders=1&limit=1000&name=[name].[ext]&publicPath=../../commons/fonts/&outputPath=commons/fonts/'}]},             //处理字体
+                {test: /routerStates\.js$/, loader: stringReplaceWebpackPlugin.replace({replacements: [{pattern: /hash/ig, replacement: function (match, p1, offset, string) {return 'aaa';}}]})},
             ]
         },
         plugins: [
@@ -63,6 +65,7 @@ function getWebpackConfig({outPath}) {
                 }
                 return copySets;
             }())),
+            new stringReplaceWebpackPlugin(),
             new webpack.optimize.CommonsChunkPlugin({filename: 'commons/commons.js', name: 'commons'}),      //提取公共js
             // new webpack.optimize.DedupePlugin(),                      //避免出现重复模块    //这个已弃用
         ]

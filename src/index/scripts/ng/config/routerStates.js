@@ -17,7 +17,7 @@ const routerStates = {
         resolve: {
             loadModleOne: ['$ocLazyLoad', function ($ocLazyLoad) {
                 return $ocLazyLoad.load([
-                    'moduleOne/js/main.js',
+                    'moduleOne/js/main[hash].js',
                     // 'moduleOne/css/main.css'
                 ]);
             }]
@@ -31,8 +31,8 @@ const routerStates = {
         resolve: {
             loadModleTwo: ['$ocLazyLoad', function ($ocLazyLoad) {
                 return $ocLazyLoad.load([
-                    'moduleTwo/js/main.js',
-                    'moduleTwo/css/main.css'
+                    'moduleTwo/js/main[hash].js',
+                    'moduleTwo/css/main[hash].css'
                 ]);
             }]
         }
