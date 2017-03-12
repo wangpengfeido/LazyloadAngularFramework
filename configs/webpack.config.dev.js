@@ -79,7 +79,6 @@ function getWebpackConfig({outPath}) {
         ]
     };
 
-
     return config;
 }
 

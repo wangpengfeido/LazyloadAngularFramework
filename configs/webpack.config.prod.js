@@ -3,6 +3,7 @@
  */
 
 const path = require('path');                                //path模块
+const crypto=require('crypto');                             //crypto模块
 const webpack = require('webpack');                          //webpack模块
 const extractTextWebpackPlugin = require('extract-text-webpack-plugin');                //生成独立css等文件
 const htmlWebpackPlugin = require('html-webpack-plugin');                                //自动生成html
@@ -12,7 +13,12 @@ const stringReplaceWebpackPlugin = require('string-replace-webpack-plugin');    
 
 
 function getWebpackConfig({outPath}) {
-    const extractCssAndLess = new extractTextWebpackPlugin('[name]/css/main.css');
+    const hash=(function () {
+        let hash=crypto.createHash('sha256');
+        hash.update(Math.random().toString());
+        return hash.digest('hex');
+    }());
+    const extractCssAndLess = new extractTextWebpackPlugin('[name]/css/main.'+hash+'.css');
     const modules = {                                                                  //在此处添加模块
         dependent: path.resolve(__dirname, '../src/index/dependent.js'),
         index: path.resolve(__dirname, '../src/index/scripts/ng/index.js'),
@@ -26,7 +32,7 @@ function getWebpackConfig({outPath}) {
         entry: modules,
         output: {
             path: outPath,
-            filename: '[name]/js/main.js',
+            filename: '[name]/js/main.'+hash+'.js',
             publicPath: '',
             chunkFilename: '[name].js'
         },
@@ -40,7 +46,7 @@ function getWebpackConfig({outPath}) {
                     test: /routerStates\.js$/, loader: stringReplaceWebpackPlugin.replace({
                     replacements: [{
                         pattern: /\[hash\]/ig, replacement: function (match, p1, offset, string) {
-                            return '';
+                            return '.'+hash;
                         }
                     }]
                 })
@@ -73,8 +79,14 @@ function getWebpackConfig({outPath}) {
                 }
                 return copySets;
             }())),
+            new webpack.optimize.UglifyJsPlugin({                             //压缩代码
+                compress: {
+                    warnings: false
+                },
+                mangle:false
+            }),
             new stringReplaceWebpackPlugin(),                //为了处理路由文件中，懒加载文件自动加入hash值
-            new webpack.optimize.CommonsChunkPlugin({filename: 'commons/commons.js', name: 'commons'}),      //提取公共js
+            new webpack.optimize.CommonsChunkPlugin({filename: 'commons/commons.'+hash+'.js', name: 'commons'}),      //提取公共js
             // new webpack.optimize.DedupePlugin(),                      //避免出现重复模块    //这个已弃用
         ]
     };

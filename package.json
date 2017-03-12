@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "test": "webpack --config configs/webpack.configs.js",
+    "test": "webpack --config configs/webpack.config.js",
     "dev": "webpack --config configs/webpack.config.dev.js",
     "devwatch": "webpack --watch --config configs/webpack.config.dev.js",
     "devserver": "webpack-dev-server --config configs/webpack.config.dev.js",
