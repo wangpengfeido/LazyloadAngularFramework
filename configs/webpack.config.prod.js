@@ -20,7 +20,7 @@ function getWebpackConfig({outPath}) {
     }());
     const extractCssAndLess = new extractTextWebpackPlugin('[name]/css/main.'+hash+'.css');
     const modules = {                                                                  //在此处添加模块
-        dependent: path.resolve(__dirname, '../src/index/dependent.js'),
+        dependent: path.resolve(__dirname, '../src/index/vendor.js'),
         index: path.resolve(__dirname, '../src/index/scripts/ng/index.js'),
         moduleCommon: path.resolve(__dirname, '../src/moduleCommon/scripts/ng/index.js'),
         moduleOne: path.resolve(__dirname, '../src/moduleOne/scripts/ng/index.js'),

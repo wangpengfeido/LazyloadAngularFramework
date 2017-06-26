@@ -20,7 +20,7 @@
 ## 文件路径
 #### 一些比较重要的路径
 ###### 整个应用所有框架、库、插件等依赖项的入口
-src/index/dependent.js
+src/index/vendor.js
 ###### 整个应用angular的入口文件
 src/index/scripts/ng/index.js
 ###### html中的老大

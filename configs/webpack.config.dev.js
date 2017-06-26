@@ -14,7 +14,7 @@ const stringReplaceWebpackPlugin = require('string-replace-webpack-plugin');    
 function getWebpackConfig({outPath}) {
     const extractCssAndLess = new extractTextWebpackPlugin('[name]/css/main.css');
     const modules = {                                                                  //在此处添加模块
-        dependent: path.resolve(__dirname, '../src/index/dependent.js'),
+        vendor: path.resolve(__dirname, '../src/index/vendor.js'),
         index: path.resolve(__dirname, '../src/index/scripts/ng/index.js'),
         moduleCommon: path.resolve(__dirname, '../src/moduleCommon/scripts/ng/index.js'),
         moduleOne: path.resolve(__dirname, '../src/moduleOne/scripts/ng/index.js'),
@@ -53,9 +53,9 @@ function getWebpackConfig({outPath}) {
                 filename: 'index.html',
                 template: path.resolve(__dirname, '../src/index.html'),
                 inject: true,
-                chunks: ['dependent', 'commons', 'moduleCommon', 'index'],
+                chunks: ['vendor', 'commons', 'moduleCommon', 'index'],
                 chunksSortMode: (function () {             //控制引用顺序的函数
-                    let list = {commons: 0, dependent: 1, moduleCommon: 2, index: 3};
+                    let list = {commons: 0, vendor: 1, moduleCommon: 2, index: 3};
                     return function (a, b) {
                         return list[a.names[0]] - list[b.names[0]];
                     };
@@ -64,7 +64,7 @@ function getWebpackConfig({outPath}) {
             new copyWebpackPlugin((function () {                               //拷贝文件，如过from中有*，则复制到的路径相对于根路径，否则相对于from的路径
                 let copySets = [];
                 for (let k in modules) {
-                    if (k !== 'dependent') {
+                    if (k !== 'vendor') {
                         copySets.push({
                             from: 'src/' + k + '/tpls',
                             to: k + '/tpls'
